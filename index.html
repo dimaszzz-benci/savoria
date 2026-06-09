@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SAVORIA — Restoran Premium</title>
+  <meta name="description" content="Nikmati hidangan premium dengan bahan lokal & teknik internasional di SAVORIA.">
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- QR Code Generator -->
+  <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.0/dist/qrious.min.js"></script>
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Loader -->
+  <div id="loader" class="loader">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast"></div>
+
+  <!-- Auth Page -->
+  <div id="auth-page" class="auth-page">
+    <div class="auth-container">
+      <div class="auth-card">
+        <div class="auth-logo">
+          <svg viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45" fill="none" stroke="#c40233" stroke-width="4"/>
+            <path d="M30,50 Q50,30 70,50 T30,50" stroke="#c40233" stroke-width="4" fill="none"/>
+            <circle cx="50" cy="50" r="6" fill="#ffde00"/>
+          </svg>
+          <h1>SAVORIA</h1>
+        </div>
+
+        <!-- Panel Login/Daftar Utama -->
+        <div id="auth-main-panel">
+          <h3 class="auth-title">Masuk ke Akun Anda</h3>
+          
+          <!-- Simulasi Google Sign In Button -->
+          <button class="google-btn" onclick="showGoogleAccountSelector()">
+            <i class="fab fa-google"></i> Masuk dengan Google
+          </button>
+
+          <div class="divider"><span>atau</span></div>
+
+          <div id="login-form">
+            <input type="email" id="login-email" placeholder="Alamat Email" class="auth-input">
+            <input type="password" id="login-password" placeholder="Kata Sandi" class="auth-input">
+            <button class="auth-btn" onclick="loginWithEmail()">Masuk via Email</button>
+            <p class="register-text">
+              Belum memiliki akun? <a onclick="showRegisterForm()">Daftar sekarang</a>
+            </p>
+          </div>
+        </div>
+
+        <!-- Panel Pendaftaran Akun Baru -->
+        <div id="register-form" class="hidden">
+          <h3 class="auth-title">Daftar Akun Baru</h3>
+          <input type="text" id="reg-name" placeholder="Nama Lengkap" class="auth-input">
+          <input type="email" id="reg-email" placeholder="Alamat Email" class="auth-input">
+          <input type="password" id="reg-password" placeholder="Kata Sandi (Min. 6 karakter)" class="auth-input">
+          <button class="auth-btn" onclick="registerAccount()">Daftar Akun</button>
+          <p class="register-text">
+            Sudah memiliki akun? <a onclick="showLoginForm()">Masuk kembali</a>
+          </p>
+        </div>
+
+        <p class="auth-footer-text">
+          Dengan mendaftar, Anda menyetujui Kebijakan Privasi kami.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dialog Pilihan Akun Google (Simulasi Google Sign-In) -->
+  <div id="google-modal" class="modal">
+    <div class="modal-content auth-modal-content">
+      <div class="google-modal-header">
+        <i class="fab fa-google google-icon"></i>
+        <h3>Pilih Akun Gmail</h3>
+        <p>untuk melanjutkan ke SAVORIA</p>
+      </div>
+      <div class="modal-body google-account-list">
+        <div class="google-account-item" onclick="selectGoogleAccount('budi.santoso@gmail.com', 'Budi Santoso')">
+          <div class="avatar-letter">B</div>
+          <div class="account-details">
+            <span class="account-name">Budi Santoso</span>
+            <span class="account-email">budi.santoso@gmail.com</span>
+          </div>
+        </div>
+        <div class="google-account-item" onclick="selectGoogleAccount('siti.aminah@gmail.com', 'Siti Aminah')">
+          <div class="avatar-letter" style="background-color: #e91e63;">S</div>
+          <div class="account-details">
+            <span class="account-name">Siti Aminah</span>
+            <span class="account-email">siti.aminah@gmail.com</span>
+          </div>
+        </div>
+        <div class="google-account-item" onclick="selectGoogleAccount('custom', 'Custom')">
+          <div class="avatar-letter" style="background-color: #607d8b;"><i class="fas fa-user-plus"></i></div>
+          <div class="account-details">
+            <span class="account-name">Gunakan akun lain</span>
+            <span class="account-email">Gunakan email Google baru</span>
+          </div>
+        </div>
+      </div>
+      <div id="custom-google-input" class="hidden" style="padding: 15px; border-top: 1px solid #eee;">
+        <input type="email" id="custom-gmail" placeholder="nama@gmail.com" class="auth-input" style="margin-bottom: 8px;">
+        <input type="text" id="custom-gname" placeholder="Nama Lengkap" class="auth-input" style="margin-bottom: 8px;">
+        <button class="auth-btn" onclick="submitCustomGoogleAccount()">Hubungkan Akun</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Page -->
+  <div id="main-page" class="main-page hidden">
+    <header>
+      <div class="container">
+        <div class="header-content">
+          <div class="logo-main">
+            <svg viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="45" fill="none" stroke="#c40233" stroke-width="4"/>
+              <path d="M30,50 Q50,30 70,50 T30,50" stroke="#c40233" stroke-width="4" fill="none"/>
+              <circle cx="50" cy="50" r="6" fill="#ffde00"/>
+            </svg>
+            <h1>SAVORIA</h1>
+          </div>
+          <div class="header-actions">
+            <div class="language-selector">
+              <button class="lang-btn active" data-lang="id">ID</button>
+              <button class="lang-btn" data-lang="en">EN</button>
+              <button class="lang-btn" data-lang="es">ES</button>
+            </div>
+            <div class="profile-btn" onclick="showProfile()" title="Profil">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="cart-icon" onclick="showCheckout()" title="Keranjang">
+              <i class="fas fa-shopping-cart"></i>
+              <span id="cart-count">0</span>
+            </div>
+            <div class="settings-btn" onclick="showSettings()" title="Pengaturan">
+              <i class="fas fa-cog"></i>
+            </div>
+            <!-- Admin Panel Button -->
+            <div id="admin-btn" class="hidden" onclick="showAdminPanel()" title="Admin Panel">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Selamat Datang di SAVORIA!</h1>
+        <p>Restoran premium dengan bahan lokal & teknik internasional. Nikmati hidangan terbaik kami.</p>
+        <div class="hero-buttons">
+          <button class="hero-btn primary" onclick="showMenu('makanan')">Jelajahi Makanan</button>
+          <button class="hero-btn" onclick="showMenu('minuman')">Jelajahi Minuman</button>
+          <button class="hero-btn" onclick="showSpinWheel()">Putar Hadiah Harian</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="menu-title">Menu Makanan Premium</h2>
+          <p>Hidangan lezat dari koki berpengalaman dengan bahan segar pilihan</p>
+          <div class="search-filter">
+            <input type="text" id="search-menu" placeholder="Cari menu..." class="search-input">
+            <select id="filter-price" class="filter-select">
+              <option value="all">Semua Harga</option>
+              <option value="low">&lt; Rp50.000</option>
+              <option value="mid">Rp50.000 - Rp100.000</option>
+              <option value="high">&gt; Rp100.000</option>
+            </select>
+          </div>
+        </div>
+        <div class="slider-section">
+          <div class="slider-container" id="menu-slider"></div>
+          <div class="slider-nav">
+            <button class="nav-btn" id="prev-btn"><i class="fas fa-chevron-left"></i></button>
+            <button class="nav-btn" id="next-btn"><i class="fas fa-chevron-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2026 SAVORIA. Semua hak cipta dilindungi.</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- MODALS -->
+  <!-- Spin Wheel Modal -->
+  <div id="spin-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Hadiah Harian</h2>
+        <button class="close-modal" onclick="closeModal('spin-modal')">&times;</button>
+      </div>
+      <div class="modal-body" style="text-align:center;">
+        <div class="spin-wheel-container">
+          <div class="spin-pointer"></div>
+          <div class="spin-wheel" id="spin-wheel">
+            <button class="spin-btn" onclick="spinWheel()">SPIN</button>
+          </div>
+        </div>
+        <p>Klaim hadiah harian Anda hari ini!</p>
+        <div id="spin-result"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout/Cart Modal -->
+  <div id="checkout-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Keranjang Belanja</h2>
+        <button class="close-modal" onclick="closeModal('checkout-modal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="cart-items"></div>
+        <div id="empty-cart" class="hidden">
+          <p style="text-align:center; color:#888;">Keranjang Anda kosong!</p>
+        </div>
+        <div class="total-section" style="margin-top:1.5rem; padding-top:1.5rem; border-top:1px solid #eee; display:flex; justify-content:space-between; font-weight:700;">
+          <span>Total:</span>
+          <span id="cart-total">Rp0</span>
+        </div>
+        <div class="payment-methods">
+          <label style="font-weight:600; margin-top:1rem;">Pilih Metode Pembayaran:</label>
+          <div class="payment-method selected" data-method="qris" onclick="selectPayment('qris')">
+            <i class="fas fa-qrcode"></i> QRIS (Scan di Kasir)
+          </div>
+          <div class="payment-method" data-method="cash" onclick="selectPayment('cash')">
+            <i class="fas fa-money-bill-wave"></i> Tunai
+          </div>
+          <div class="payment-method" data-method="debit" onclick="selectPayment('debit')">
+            <i class="fas fa-credit-card"></i> Kartu Debit/Kredit
+          </div>
+        </div>
+        <button class="btn btn-primary" style="margin-top:1.5rem; width:100%; padding:14px; border:none; border-radius:10px; background:var(--primary); color:white; font-weight:600; cursor:pointer;" onclick="confirmOrder()">
+          Bayar Sekarang
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Receipt Modal -->
+  <div id="receipt-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Struk Pembayaran</h2>
+        <button class="close-modal" onclick="closeModal('receipt-modal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="receipt" id="receipt-content"></div>
+        <button class="print-btn" onclick="printReceipt()">Cetak Struk</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Modal -->
+  <div id="profile-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Profil Saya</h2>
+        <button class="close-modal" onclick="closeModal('profile-modal')">&times;</button>
+      </div>
+      <div class="modal-body" style="text-align:center;">
+        <img id="profile-avatar" class="profile-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Avatar">
+        <input type="file" id="avatar-input" class="hidden-file-input" accept="image/*" onchange="previewAvatar(event)">
+        <button class="upload-btn" onclick="document.getElementById('avatar-input').click()">Ganti Foto</button>
+        <input type="text" id="edit-name" class="edit-name-input" placeholder="Nama Pengguna">
+        <button class="auth-btn" style="width:auto; padding:8px 16px;" onclick="saveProfile()">Simpan Perubahan</button>
+        <div class="loyalty-section">
+          <div>Poin Anda</div>
+          <div class="points" id="user-points">0</div>
+          <div class="member-badge" id="member-badge">Member</div>
+          <div style="margin-top:5px;">Streak Login: <span id="streak-count">0</span> hari</div>
+          <div class="streak" id="streak-display"></div>
+        </div>
+        <p>Login via: <strong id="login-provider">Email</strong></p>
+        
+        <!-- Order History -->
+        <div class="order-history">
+          <h4 style="margin: 1.5rem 0 0.5rem; text-align: left;">Riwayat Pesanan</h4>
+          <div id="order-history-list">
+            <p style="text-align:center; color:#888;">Belum ada pesanan</p>
+          </div>
+        </div>
+        
+        <button class="btn btn-outline" style="margin-top:1rem; width:100%; padding:12px; border:1px solid #ddd; border-radius:10px; background:transparent; font-weight:600; cursor:pointer;" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i> Keluar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settings-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Pengaturan</h2>
+        <button class="close-modal" onclick="closeModal('settings-modal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="settings-grid">
+          <div class="setting-item">
+            <label>Bahasa</label>
+            <div class="language-selector" style="gap:6px;">
+              <button class="lang-btn small" data-lang="id">ID</button>
+              <button class="lang-btn small" data-lang="en">EN</button>
+              <button class="lang-btn small" data-lang="es">ES</button>
+            </div>
+          </div>
+          <div class="setting-item">
+            <label>Notifikasi Push</label>
+            <label class="toggle">
+              <input type="checkbox" id="notif-toggle" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="setting-item">
+            <label>Mode Gelap</label>
+            <label class="toggle">
+              <input type="checkbox" id="dark-mode-toggle">
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="setting-item">
+            <label>Reset Data Lokal</label>
+            <button class="btn btn-outline" style="padding:6px 12px; font-size:0.9rem; border:1px solid #ddd; border-radius:6px; background:transparent; cursor:pointer;" onclick="resetData()">
+              Hapus Semua
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Panel Modal -->
+  <div id="admin-modal" class="modal">
+    <div class="modal-content" style="max-width: 700px;">
+      <div class="modal-header">
+        <h2>Admin Panel — Kelola Menu</h2>
+        <button class="close-modal" onclick="closeModal('admin-modal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="margin-bottom: 1rem;">
+          <label><strong>Kategori:</strong></label>
+          <select id="admin-category" style="width:100%; padding:8px; margin:5px 0; border-radius:6px;" onchange="renderAdminMenuList()">
+            <option value="makanan">Makanan</option>
+            <option value="minuman">Minuman</option>
+            <option value="dessert">Dessert</option>
+            <option value="appetizer">Appetizer</option>
+          </select>
+        </div>
+        <input type="text" id="admin-item-name-id" placeholder="Nama (ID)" class="auth-input" style="margin-bottom:8px;">
+        <input type="text" id="admin-item-name-en" placeholder="Nama (EN)" class="auth-input" style="margin-bottom:8px;">
+        <input type="text" id="admin-item-name-es" placeholder="Nama (ES)" class="auth-input" style="margin-bottom:8px;">
+        <input type="number" id="admin-item-price" placeholder="Harga (angka saja)" class="auth-input" style="margin-bottom:8px;">
+        <input type="text" id="admin-item-img" placeholder="URL Gambar" class="auth-input" style="margin-bottom:8px;">
+        <input type="number" id="admin-item-stock" placeholder="Stok" class="auth-input" style="margin-bottom:8px;" min="0" value="10">
+        <button class="auth-btn" onclick="saveMenuItem()" style="width:auto; padding:10px 20px; margin-top:10px;">
+          Tambah / Simpan Item
+        </button>
+        <h3 style="margin:1.5rem 0 1rem;">Daftar Item</h3>
+        <div id="admin-menu-list"></div>
+        <h3 style="margin:1.5rem 0 1rem;">Pesanan Pelanggan</h3>
+        <div id="admin-orders-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App Script -->
+  <script src="js/app.js"></script>
+</body>
+</html>
