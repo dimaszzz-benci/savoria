@@ -1,0 +1,260 @@
+/* === AUTHENTICATION PAGE AND MODALS === */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+}
+.auth-container {
+  width: 100%;
+  max-width: 440px;
+}
+.auth-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 2.5rem;
+  box-shadow: var(--shadow);
+  color: var(--dark);
+  animation: fadeIn 0.6s ease;
+}
+body.dark-mode .auth-card {
+  background: rgba(30, 30, 30, 0.95);
+  color: #f0f0f0;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.auth-logo {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.auth-logo svg {
+  width: 55px;
+  height: 55px;
+  margin-bottom: 8px;
+}
+.auth-logo h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  color: var(--primary);
+  letter-spacing: 2px;
+}
+.auth-title {
+  text-align: center;
+  margin-bottom: 1.2rem;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+/* === SIMULASI GMAIL BUTTON === */
+.google-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #ffffff;
+  border: 1px solid #dadce0;
+  border-radius: 10px;
+  color: #3c4043;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.google-btn:hover {
+  background-color: #f8f9fa;
+  border-color: #c4c7c5;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+.google-btn i {
+  color: #4285f4;
+  font-size: 1.15rem;
+}
+
+.divider {
+  text-align: center;
+  margin: 1.2rem 0;
+  position: relative;
+  color: #888;
+  font-size: 0.85rem;
+}
+body.dark-mode .divider {
+  color: #aaa;
+}
+.divider span {
+  background: white;
+  padding: 0 10px;
+  position: relative;
+  z-index: 1;
+}
+body.dark-mode .divider span {
+  background: #1e1e1e;
+}
+.divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #ddd;
+}
+body.dark-mode .divider::before {
+  background: #444;
+}
+
+/* === FORM INPUT === */
+.auth-input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  border: 1px solid #dadce0;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  background: white;
+  color: var(--dark);
+  transition: var(--transition);
+}
+.auth-input:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(196, 2, 51, 0.15);
+}
+body.dark-mode .auth-input {
+  background: #2a2a2a;
+  color: #f0f0f0;
+  border-color: #444;
+}
+body.dark-mode .auth-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(255, 222, 0, 0.15);
+}
+.auth-btn {
+  width: 100%;
+  padding: 12px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: var(--transition);
+}
+.auth-btn:hover {
+  background: #a00128;
+  transform: translateY(-1px);
+}
+.register-text {
+  text-align: center;
+  margin-top: 1.2rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+.register-text a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+body.dark-mode .register-text {
+  color: #bbb;
+}
+body.dark-mode .register-text a {
+  color: var(--accent);
+}
+.auth-footer-text {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 1.5rem;
+}
+
+/* === ACCOUNTS SELECTION DIALOG === */
+.auth-modal-content {
+  max-width: 380px;
+  border-radius: 12px;
+}
+.google-modal-header {
+  padding: 24px 24px 10px;
+  text-align: center;
+  background: transparent;
+  color: var(--dark);
+}
+body.dark-mode .google-modal-header {
+  color: white;
+}
+.google-modal-header h3 {
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin-top: 10px;
+}
+.google-modal-header p {
+  color: #5f6368;
+  font-size: 0.9rem;
+}
+body.dark-mode .google-modal-header p {
+  color: #aaa;
+}
+.google-icon {
+  font-size: 2.2rem;
+  color: #4285f4;
+}
+.google-account-list {
+  padding: 8px 16px 24px;
+}
+.google-account-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-bottom: 4px;
+}
+.google-account-item:hover {
+  background-color: #f1f3f4;
+}
+body.dark-mode .google-account-item:hover {
+  background-color: #2d2d2d;
+}
+.avatar-letter {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #4285f4;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+.account-details {
+  display: flex;
+  flex-direction: column;
+}
+.account-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.account-email {
+  font-size: 0.8rem;
+  color: #5f6368;
+}
+body.dark-mode .account-email {
+  color: #aaa;
+}
